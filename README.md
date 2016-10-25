@@ -1,2 +1,2 @@
-# Kubernets_etcd_cluser
-Kubernet cluster setup with etcd cluster
+# Kubernetes_etcd_cluser
+Kubernetes cluster setup with etcd cluster
