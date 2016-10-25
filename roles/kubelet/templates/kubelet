@@ -1,0 +1,29 @@
+###
+{% macro initial_cluster() -%}
+{% for host in groups[kube_master] -%}
+{{ etcd_peer_url_scheme }}://{{ hostvars[host]['ansible_' + etcd_interface].ipv4.address }}:{{ kube_master_port }}
+{%- if not loop.last -%},{%- endif -%}
+{%- endfor -%}
+{%- endmacro -%}
+
+
+# kubernetes kubelet (minion) config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=0.0.0.0"
+
+# The port for the info server to serve on
+# KUBELET_PORT="--port=10250"
+
+# You may leave this blank to use the actual hostname
+KUBELET_HOSTNAME="--hostname-override={{ ansible_nodename }}"
+
+# location of the api-server
+KUBELET_API_SERVER="--api-servers={{ initial_cluster() }}"
+
+# pod infrastructure container
+KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest"
+
+# Add your own!
+KUBELET_ARGS=""
+

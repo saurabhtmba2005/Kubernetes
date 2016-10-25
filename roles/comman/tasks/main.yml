@@ -1,0 +1,14 @@
+---
+- name: Adding EPEL repository for centos7
+  yum_repository:
+    name: epel
+    description: EPEL YUM REPO
+    file: external_repos
+    baseurl: http://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    gpgcheck: no
+  register: yumstable
+
+- name: Build hosts file
+  when: ansible_os_family == "RedHat"
+  template: src=hosts dest=/etc/hosts backup=yes
+  register: hostadded

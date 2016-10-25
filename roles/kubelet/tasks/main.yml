@@ -1,0 +1,30 @@
+---
+- name: Insatlling "{{ item }}"
+  when: ansible_os_family == "RedHat"
+  yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: no
+  with_items:
+    - kubernetes-node
+    - flannel
+  register: installed
+
+- name: Adding Configuratiion file for kubelet 
+  when: installed|success
+  template: src=kubelet dest=/etc/kubernetes/kubelet owner=root group=root  backup=yes
+
+- name: Adding Configuratiion file for kubelet
+  when: installed|success
+  template: src=config dest=/etc/kubernetes/config owner=root group=root  backup=yes
+
+- name: Adding Configuratiion file for flanneld
+  when: installed|success
+  template: src=flanneld dest=/etc/sysconfig/flanneld  backup=yes
+  register: config
+  notify:
+    - restart kubelet
+    - restart kube-proxy 
+    - restart flanneld
+    - restart docker
+

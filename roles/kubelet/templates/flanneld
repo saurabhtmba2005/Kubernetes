@@ -1,0 +1,19 @@
+{% macro initial_cluster() -%}
+{% for host in groups[etcd_peers_group] -%}
+{{ etcd_peer_url_scheme }}://{{ hostvars[host]['ansible_' + etcd_interface].ipv4.address }}:{{ etcd_client_port }}
+{%- if not loop.last -%},{%- endif -%}
+{%- endfor -%}
+{%- endmacro -%}
+
+# Flanneld configuration options  
+
+# etcd url location.  Point this to the server where etcd runs
+FLANNEL_ETCD="{{ initial_cluster() }}"
+
+# etcd config key.  This is the configuration key that flannel queries
+# For address range assignment
+FLANNEL_ETCD_KEY="/atomic.io/network"
+
+# Any additional options that you want to pass
+#FLANNEL_OPTIONS=""
+

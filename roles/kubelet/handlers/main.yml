@@ -1,0 +1,24 @@
+---
+- name: start kubelet
+  service: name=kubelet state=started
+
+- name: start kube-proxy
+  service: name=kube-proxy state=started
+
+- name: start flanneld
+  service: name=flanneld state=started
+
+- name: start docker
+  service: name=docker state=started
+
+- name: restart kubelet
+  service: name=kubelet state=restarted
+
+- name: restart kube-proxy
+  service: name=kube-proxy state=restarted
+
+- name: restart flanneld
+  service: name=flanneld state=restarted
+
+- name: restart docker
+  service: name=docker state=restarted

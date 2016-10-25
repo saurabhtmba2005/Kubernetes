@@ -1,0 +1,36 @@
+---
+- name: Installing Kubernets Master
+  when: ansible_os_family == "RedHat"
+  yum: 
+    name: "{{ item }}" 
+    state: latest
+    update_cache: no
+  register: installed
+  with_items:
+    - kubernetes-master
+
+- name: Adding Configuratiion file for kubernete 
+  when: installed|success
+  template: src=config dest=/etc/kubernetes/config owner=root group=root  backup=yes
+
+- name: Adding Configuratiion file for kubernete
+  when: installed|success
+  template: src=apiserver dest=/etc/kubernetes/apiserver owner=root group=root  backup=yes
+
+- name: Adding Configuratiion file for kubernete
+  when: installed|success
+  template: src=controller dest=/etc/kubernetes/controller-manager owner=root group=root  backup=yes
+
+- name: Adding Configuratiion file for kubernete
+  when: installed|success
+  template: src=scheduler dest=/etc/kubernetes/scheduler owner=root group=root  backup=yes
+  register: config
+  notify:
+    - restart apiserver
+    - restart controller 
+    - restart scheduler 
+
+- name: Adding flanneld network in etcd cluster
+  when: config|success
+  copy: src=atomic dest=/tmp/atomic.config
+  register: fcopy

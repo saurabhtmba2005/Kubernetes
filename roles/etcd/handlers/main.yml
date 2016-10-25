@@ -1,0 +1,8 @@
+---
+- name: Start Etcd
+  service: name=etcd state=started
+
+
+- name: restart etcd
+  when: config|changed
+  service: name=etcd state=restarted

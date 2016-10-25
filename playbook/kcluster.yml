@@ -1,0 +1,20 @@
+---
+- name: Installing hosts file and Epel repo
+  hosts: node
+  roles:
+    - comman
+
+- name: Installing etcd cluster
+  hosts: etcd
+  roles:
+    - etcd
+
+- name: Kubernet master installation
+  hosts: master
+  roles:
+    - kubernetes
+
+- name: Kubernet client installation
+  hosts: etcd
+  roles:
+    - kubelet

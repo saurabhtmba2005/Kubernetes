@@ -1,0 +1,18 @@
+---
+- name: start apiserver
+  service: name=kube-apiserver state=started
+
+- name: start scheduler
+  service: name=kube-scheduler state=started
+
+- name: start controller
+  service: name=kube-controller-manager state=started
+
+- name: restart apiserver
+  service: name=kube-apiserver state=restarted
+
+- name: restart scheduler
+  service: name=kube-scheduler state=restarted
+
+- name: restart controller
+  service: name=kube-controller-manager state=restarted

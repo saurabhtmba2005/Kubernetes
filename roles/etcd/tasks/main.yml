@@ -1,0 +1,17 @@
+---
+
+- name: Install ETCD "{{ etcd_vers }}"
+  when: ansible_os_family == "RedHat"
+  yum: 
+    name: "{{ etcd_vers }}" 
+    state: present
+    update_cache: no
+  register: etcdinstalled
+
+- name: Adding hostname through templet in etcd.conf
+  when: hostadded|success
+  template: src=etcd.conf dest=/etc/etcd/etcd.conf owner=root group=root mode=0644
+  register: config
+  notify:
+    - restart etcd
+
