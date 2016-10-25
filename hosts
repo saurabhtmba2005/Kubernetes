@@ -1,0 +1,6 @@
+[master]
+IP Address for Kubernet master server
+[etcd]
+IP Address for etcd server
+[node]
+P Address for all cluster nodes
