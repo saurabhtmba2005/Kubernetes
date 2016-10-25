@@ -2,4 +2,4 @@
 Kubernetes cluster setup with etcd cluster
 
 # Ansible module for kubernetes cluser with etcd
-You can use and set your Kubernetes cluster with etcd cluster.
+You can use and setup your Kubernetes cluster with etcd cluster.
